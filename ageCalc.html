@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+	<head>
+		<script type="text/javascript" src="new.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+		<script>
+			var c_age;
+			var monthAge;
+			var days;
+			
+			function age()
+			{	
+				var dob=document.forms["reg"]["birth"].value;//30052015	
+				
+				var year=Number(dob.substr(6,4));//2015
+				var month=Number(dob.substr(3,2));//05
+				var dat=Number(dob.substr(0,2));//30
+			
+				if(month>12)
+					alert("Invalid Month");
+
+				var today=new Date();
+				var t_dat=today.getDate();//current date
+				
+				var len=dob.length;
+				var no_days;
+				if(month==1 || month==3 || month==5 || month==7 || month==8 || month==10 || month==12)
+				{
+					no_days=31;
+				}
+				else if(month==4 || month==6 || month==9 || month==11)
+				{
+					no_days=30;
+				}
+				else
+				{
+					if( month==2 && ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0) )
+						no_days=29;
+					else
+						no_days=28;
+				}
+				if(dat>no_days)
+					alert("This Month have Only"+" "+no_days+" "+"Days");
+			
+				if(t_dat>dat) //17>30
+					monthAge--;
+					days=t_dat-dat;
+					
+				var t_month=today.getMonth()+1;
+				var t_year=today.getFullYear();
+				
+				if(year == t_year && month==t_month && dat>t_dat)
+					confirm("Date Must Lessthan The Current Date");
+				
+				if(year == t_year && month>t_month || year>t_year || month>12)
+					confirm("Date Must Lessthan The Current Date");
+					
+				c_age=t_year-year;
+				
+				if (t_month >= month){
+				
+												
+					monthAge = (t_month - month);
+					
+				}
+				else {
+					c_age--;
+					monthAge = (12 + (t_month - month));
+				}
+	
+				
+				if(days<0){
+					monthAge--;
+					
+					days=no_days+(days)
+					if(days>no_days)
+					{
+						days=days-no_days;
+						monthAge++
+					}
+				}
+
+				if(c_age>=0 && monthAge>=0 && days>=0)
+
+					document.getElementById("age").innerHTML="Age:"+" "+c_age+"Year(s)"+" "+monthAge+"Month(s)"+" "+days+" "+"Day(s)";
+					
+				else
+					document.getElementById("age").innerHTML="Note: Date Must Less Than The Current Date";
+					
+			
+			}
+			function data()
+			{
+				var age=c_age;
+				var mon=monthAge;
+				var day=days;
+
+				var fname=$("#fname").val();
+				var lname=$("#lname").val();
+				var dob=$("#birth").val();
+				var sex=$("#sex").val();
+				var addr=$("#address").val();
+				var cntry=$("#country").val();
+				var state=$("#state").val();
+				var city=$("#city").val();
+				
+				document.writeln("Thank You--->>"+" "+fname+" "+lname);
+				document.write("<br>");
+				document.write("Date Of Birth:"+" "+dob);
+				document.write("<br>");
+				document.writeln("Age:"+" "+age+" "+"Years"+" "+mon+" "+"Months"+" "+day+" "+"Days");
+				document.write("<br>");
+				document.writeln("Gender:"+" "+sex);
+				document.write("<br>");
+				document.writeln("Address:"+" "+addr);
+				document.write("<br>");
+				document.writeln("Country:"+" "+cntry);
+				document.write("<br>");
+				document.writeln("State:"+" "+state);
+				document.write("<br>");
+				document.writeln("City:"+" "+city);
+											
+			}	
+		</script>
+		<style>
+			body {
+    				background-color: #d0e4fe;
+			}
+			form{
+				//border-style: solid;
+				//border-color: red green blue yellow;
+				position: relative;
+			
+			}
+			input[type="text"],textarea {
+    				border: none;
+    				background: transparent;
+				font-size: 20px;
+				width: 500px;
+    
+  			}
+			td,option,button{
+				font-size:20px;
+			}
+	
+		
+		</style>
+
+	</head>
+	<body background="1.jpg">
+		<form name="reg"  method="get"  >
+		<table align="center" >
+			<tr>
+				<td colspan="2" align="center"><h1 style="font-size:20px;color:blue">Registration</h1></td>
+			</tr>
+			<tr>
+				<td>First Name:</td>
+				<td><input type="text" name="fname" id="fname" placeholder="Enter Your First Name Here" pattern="[a-zA-Z]{3,10}" title="Name Must Contain atleast 3 Characters" required/></td>
+			</tr>
+			<tr>
+				<td>Last Name:</td>
+				<td><input type="text" name="lname" id="lname" placeholder="Enter Your Last Name Here" pattern="[a-zA-Z]{3,10}" title="Name Must Contain atleast 3 Characters" required/></td>
+			</tr>
+
+
+			<tr>
+				<td>Date Of Birth:</td>
+				<td colspan=""><input type="text"  onchange="age()" name="birth" id="birth" placeholder="dd-mm-yyyy" pattern="\d{1,2}-\d{1,2}-\d{4}" required title="Date Format DD-MM-YYYY"/>
+				<p id="age"></p>
+				
+				</td>
+				
+			</tr>
+
+			<tr>
+				<td>Sex:</td>
+				<td><input type="radio" name="sex" id="sex" value="Male" checked>Male
+				<input type="radio" name="sex" id="sex" value="Female">Female</td>
+			</tr>
+
+			<tr>
+				<td>Address:</td>
+				<td><textarea rows="5" cols="50" name="Address" id="address" placeholder="Address" required ></textarea></td>
+			</tr>
+
+
+			<tr>
+			<td>
+			Country
+			</td>   
+			<td>
+				<select  name="country" id="country" onchange="set_States();" style="width: 200px">
+					<option value="select">Select</option>
+					<option value="India">India</option>
+					<option value="Us">Us</option>
+					<option value="Uk">Uk</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td> State</td>
+			<td>     
+					<select name="state" onchange="set_Cities()" id="state" style="width: 200px">
+					<option value="select">Select</option>
+					<option value="Telangana">Telangana</option>
+					<option value="Andhrapradesh">Andhrapradesh</option>
+					<option value="England">England</option>
+					<option value="New York">New York</option>
+					
+					</select>
+			</td>
+		</tr>
+		<tr>
+			<td>City</td> 
+			<td>
+					<select  name="city" id="city"onchange="set_City()" id="city" style="width: 200px">
+						<option value="select">Select</option>
+						<option value="Warangal">Warangal</option>
+						<option value="Hyderabad">Hyderabad</option>
+						<option value="Vijayawada">Vijayawada</option>
+						<option value="Vizag">Vizag</option>
+						<option value="London">London</option>
+						<option value="Niagara Falls">Niagara Falls</option>
+					</select>
+			</td>
+		</tr>
+				
+				<td colspan="2" align="center">
+					<button type="submit" onclick="data()">Submit</button>
+					<button type="reset">Reset</button>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2"><marquee behavior="alternate" position="absolute"><img src=""></marquee></td>	
+			</tr>
+
+		</table>
+		</form>			
+	</body>
+</html>
